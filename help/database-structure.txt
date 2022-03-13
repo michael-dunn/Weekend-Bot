@@ -1,0 +1,30 @@
+{
+    'date_value_1': {
+        'players' : [
+            {
+                'name' : 'name_value_1',
+                'drinks': 3
+            },
+            {
+                'name' : 'name_value_2',
+                'drinks': 1
+            }
+        ]
+    },
+    'date_value_2': {
+        'players' : [
+            {
+                'name' : 'name_value_3',
+                'drinks': 9
+            },
+            {
+                'name' : 'name_value_4',
+                'drinks': 6
+            },
+            {
+                'name' : 'name_value_5',
+                'drinks': 7
+            }
+        ]
+    }
+}
