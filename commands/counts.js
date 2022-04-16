@@ -1,27 +1,19 @@
 const db = require("quick.db");
+const getDateString = require("../utilities/date");
+const util = require('util');
 
-function getDate() {
-    var date = new Date();
-    date.setHours(date.getHours() - (date.getTimezoneOffset() / 60));
-    return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-}
-
-function getDate(year, month, day) {
-    var date = new Date(year, month, day);
-    date.setHours(date.getHours() - (date.getTimezoneOffset() / 60));
-    return `${date.getFullYear()}.${date.getMonth()}.${date.getDate()}`;
-}
-
-module.exports.run = async (bot, message, args, utils) => {
-    const day = db.fetch(`${getDate()}`);
+module.exports.run = async (bot, message, args, logger) => {
+    var dataId = `${getDateString()}-${message.guild.name}`;
+    logger.log(util.format("Getting data for [%s]\n", dataId));
+    const day = db.fetch(`${dataId}`);
     if (day != null) {
         var drinkString = "Current drinks are:";
-        if (day.players.length > 0){
-            for (player of day.players){
+        if (day.players.length > 0) {
+            for (player of day.players) {
                 drinkString += `\n${player.name} - ${player.drinks}`;
             }
         }
-        else{
+        else {
             drinkString += " no one has had a drink today";
         }
         message.reply(drinkString);
@@ -33,5 +25,5 @@ module.exports.run = async (bot, message, args, utils) => {
 
 module.exports.help = {
     name: "counts",
-    aliases: []
+    aliases: ["count", "status"]
 }

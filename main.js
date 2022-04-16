@@ -2,6 +2,8 @@ const { Client, Intents, Collection } = require('discord.js');
 const botconfig = require("./botconfig.json");
 const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const fs = require('fs');
+const logger = require('./utilities/logger');
+const util = require('util');
 
 bot.commands = new Collection();
 bot.aliases = new Collection();
@@ -17,7 +19,6 @@ fs.readdir("./commands/", (err, files) => {
 
     jsfile.forEach((f, i) => {
         let props = require(`./commands/${f}`);
-        console.log(`${f} loaded!`);
         bot.commands.set(props.help.name, props);
         props.help.aliases.forEach(alias => {
             bot.aliases.set(alias, props.help.name);
@@ -25,11 +26,10 @@ fs.readdir("./commands/", (err, files) => {
     });
 });
 bot.on("ready", async () => {
-    console.log(`${bot.user.username} is online!`);
     bot.user.setActivity(`Ready to Party`);
     bot.user.setStatus('online');
 
-    bot.on("message", async message => {
+    bot.on("messageCreate", async message => {
         if (message.author.bot) return;
         if (message.channel.type === "dm") return;
         if (message.channel.name != 'weekend') return;
@@ -45,13 +45,14 @@ bot.on("ready", async () => {
         }
 
         if (!message.content.startsWith(prefix)) return;
-
+        logger.log(util.format('Message received from guild \'%s\': %s', message.guild.name, message.content));
 
         try {
-            commandfile.run(bot, message, args);
+            commandfile.run(bot, message, args, logger);
         } catch (e) {
             console.log(e);
         }
+        logger.reset();
     }
     )
 })
