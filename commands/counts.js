@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args, logger) => {
         var drinkString = "Current drinks are:";
         if (day.players.length > 0) {
             for (player of day.players) {
-                drinkString += `\n${player.name} - ${player.drinks}`;
+                drinkString += `\n${player.name} - ${player.drinks.reduce((a,b)=>a+b.count,0)}`;
             }
         }
         else {

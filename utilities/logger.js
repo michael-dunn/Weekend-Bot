@@ -10,7 +10,6 @@ function reset(){
     logs.forEach(log => {
         console.log(log);
     });
-    console.log("----------------------");
     logs = [];
 }
 

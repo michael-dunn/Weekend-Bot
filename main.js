@@ -45,7 +45,7 @@ bot.on("ready", async () => {
         }
 
         if (!message.content.startsWith(prefix)) return;
-        logger.log(util.format('Message received from guild \'%s\': %s', message.guild.name, message.content));
+        //logger.log(util.format('Message received from guild \'%s\': %s', message.guild.name, message.content));
 
         try {
             commandfile.run(bot, message, args, logger);

@@ -2,10 +2,10 @@ const db = require("quick.db");
 const getDateString = require("../utilities/date");
 
 module.exports.run = async (bot, message, args, logger) => {
-    const day = db.fetch(`${getDateString()}`);
+    const data = db.fetch(`${getDateString()}`);
     var players = {};
-    if (day != null) {
-        players = day.players;
+    if (data != null) {
+        players = data.players;
     }
     switch (args[0]) {
         case 'roulette':

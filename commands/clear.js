@@ -9,13 +9,14 @@ module.exports.run = async (bot, message, args, logger) => {
   if (data != null && data.players != null && data.players.length != 0) {
     for (var i = 0; i < data.players.length; i++) {
       logger.log(util.format('setting %s\'s drinks to 0', data.players[i].name));
-      data.players[i].drinks = 0;
+      data.players[i].drinks = [];
+      data.players[i].currentDrink = 'alcohol';
     };
     db.set(`${dataId}`, data);
     message.channel.send("removed drinking history for today");
   }
   else {
-    message.channel.send("not drinking history to remove");
+    message.channel.send("no drinking history to remove");
   }
 }
 
