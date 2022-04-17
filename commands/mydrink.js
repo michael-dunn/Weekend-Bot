@@ -14,22 +14,24 @@ module.exports.run = async (bot, message, args, logger) => {
             var player = data.players.find(x => x.name == message.author.username);
             logger.log(util.format('%s\'s drink set from %s to %s', player.name, player.currentDrink, drink));
             player.currentDrink = drink;
-            db.set(`${dataId}`,data);
+            db.set(`${dataId}`, data);
         }
         else {
             logger.log(util.format('%s was not in database. Adding now with drink set to %s', message.author.username, drink));
-            db.push(`${dataId}.players`,{ name: message.author.username, drinks: [], currentDrink: drink });
+            db.push(`${dataId}.players`, { name: message.author.username, drinks: [], currentDrink: drink });
         }
     }
     else {
         message.channel.send(`Set drink to ${drink} for ${message.author.username}`);
-        db.push(`${dataId}.players`,{ name: message.author.username, drinks: [], currentDrink: drink });
+        db.push(`${dataId}.players`, { name: message.author.username, drinks: [], currentDrink: drink });
     }
-    logger.log(util.format('Drink set. db: %j',db.fetch(`${dataId}`)));
+    logger.log(util.format('Drink set. db: %j', db.fetch(`${dataId}`)));
 }
 
 
 module.exports.help = {
-    name: "mydrink",
-    aliases: []
+    name: 'mydrink',
+    aliases: [],
+    helpText: `-mydrink [drinkName]
+        set your [drinkName] (default 'alcohol')`
 }
