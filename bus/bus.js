@@ -1,6 +1,8 @@
+const cardClient = require('./card-client');
 
 var cards = [{ suit: "HEARTS", value: "KING" }];
 var gameStep = '';
+//https://deckofcardsapi.com/
 
 function newGame() {
     gameStep = 'Color';
@@ -14,7 +16,10 @@ function restartGame() {
 }
 
 function drawNextCard() {
-    cards.push({ suit: "SPADES", value: "8" });
+    cardClient.nextCard().then(res => {
+        cards.push({ suit: res[0].suit, value: res[0].value });
+        console.log(cards);
+    });
 }
 
 function convertToNumber(value) {
@@ -48,6 +53,14 @@ function convertToNumber(value) {
         case "ACE":
             return 14;
     }
+}
+
+function inBetween(first, second, givenNum) {
+    console.log(`${first} ${second} ${givenNum}`);
+    if (first > second)
+        return first > givenNum && givenNum > second;
+    else
+        return second > givenNum && givenNum > first;
 }
 
 function next(buttonChosen) {
@@ -89,27 +102,44 @@ function next(buttonChosen) {
     }
     else if (gameStep == 'Outside or Between') {
         if (buttonChosen == 'first') { //Outside
-
+            if (!inBetween(convertToNumber(cards[0].value), convertToNumber(cards[1].value), convertToNumber(cards[2].value))) {
+                drawNextCard();
+                gameStep = 'Suit';
+                return [{ val: 'first', label: 'Diamond' }, { val: 'second', label: 'Spade' },{ val: 'third', label: 'Heart' }, { val: 'fourth', label: 'Club' }];
+            }
         }
         else if (buttonChosen == 'second') { //Between
-
+            if (inBetween(convertToNumber(cards[0].value), convertToNumber(cards[1].value), convertToNumber(cards[2].value))) {
+                drawNextCard();
+                gameStep = 'Suit';
+                return [{ val: 'first', label: 'Diamond' }, { val: 'second', label: 'Spade' },{ val: 'third', label: 'Heart' }, { val: 'fourth', label: 'Club' }];
+            }
         }
-        gameStep = 'Suit';
+        console.log('loser');
+        return restartGame();
     }
     else if (gameStep == 'Suit') {
         if (buttonChosen == 'first') { //Diamond
-
+            if (cards[3].suit == 'DIAMONDS'){
+                console.log('Winner');
+            }
         }
         else if (buttonChosen == 'second') { //Spade
-
+            if (cards[3].suit == 'SPADES'){
+                console.log('Winner');
+            }
         }
         else if (buttonChosen == 'third') { //Heart
-
+            if (cards[3].suit == 'HEARTS'){
+                console.log('Winner');
+            }
         }
         else if (buttonChosen == 'fourth') { //Club
-
+            if (cards[3].suit == 'CLUBS'){
+                console.log('Winner');
+            }
         }
-        gameStep = '';
+        return restartGame();
     }
 }
 
