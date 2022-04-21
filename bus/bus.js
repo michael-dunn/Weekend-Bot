@@ -16,6 +16,7 @@ function restartGame(drink) {
 }
 
 function newGame() {
+    drinkCounter = 0;
     return restartGame(false);
 }
 
