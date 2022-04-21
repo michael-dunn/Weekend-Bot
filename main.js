@@ -3,6 +3,7 @@ const botconfig = require("./botconfig.json");
 const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const fs = require('fs');
 const logger = require('./utilities/logger');
+const config = require('./config.json');
 
 bot.commands = new Collection();
 bot.aliases = new Collection();
@@ -57,4 +58,4 @@ bot.on("ready", async () => {
 	}
 	)
 })
-bot.login('OTUxODk4NDExNzI3MTk2MTkw.YiuKeg.Oi2oDrsGBoFInE8pJuuinMA0ww8');
+bot.login(config.token);
