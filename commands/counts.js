@@ -9,9 +9,14 @@ module.exports.run = async (bot, message, args, logger) => {
     if (day != null) {
         var drinkString = "Current drinks are:";
         if (day.players.length > 0) {
-            for (player of day.players) {
-                drinkString += `\n${player.name} - ${player.drinks.reduce((a, b) => a + b.count, 0)}`;
-            }
+            for (player of day.players) {             
+                if (args && args.length > 0 && args == 'verbose'){
+                    drinkString += `\n${player.name} - ${player.drinks.map(d => `${d.count} ${d.drinkName}s`).join(', ')}`;
+                }
+                else{
+                    drinkString += `\n${player.name} - ${player.drinks.reduce((a, b) => a + b.count, 0)}`;
+                }
+            }       
         }
         else {
             drinkString += " no one has had a drink today";
