@@ -27,3 +27,7 @@ then
 ## Authors
 
 - [@MichaelDunn](https://www.github.com/michael-dunn)
+
+## Contributors
+
+- [@AustinHarvey](https://www.github.com/ausstinh)
