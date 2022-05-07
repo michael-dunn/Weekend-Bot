@@ -1,48 +1,38 @@
-{
-    "date_value_1": {
-        "players": [
-            {
-                "name": "name_value_1",
-                "drinks": [
+[
+    {
+        "guildId": "0",
+        "data": {
+            "dayId": {
+                "players": [
                     {
-                        "drinkName": "beer",
-                        "count": 2
-                    },
-                    {
-                        "drinkName": "vodka",
-                        "count": 1
+                        "playerId": 1,
+                        "drinks": [
+                            {
+                                "timeStamp": "2022-05-07T15:58:23.214Z",
+                                "drinkName": "beer"
+                            },
+                            {
+                                "timeStamp": "2022-05-07T15:58:31.650Z",
+                                "drinkName": "beer"
+                            },
+                            {
+                                "timeStamp": "2022-05-07T15:58:33.893Z",
+                                "drinkName": "beer"
+                            },
+                            {
+                                "timeStamp": "2022-05-07T15:58:34.688Z",
+                                "drinkName": "beer"
+                            },
+                            {
+                                "timeStamp": "2022-05-07T15:58:35.454Z",
+                                "drinkName": "beer"
+                            }
+                        ],
+                        "currentDrink": "beer",
+                        "playerName": "hoverfuse4"
                     }
-                ],
-                "currentDrink": "beer"
-            },
-            {
-                "name": "name_value_2",
-                "drinks": [
-                    {
-                        "drinkName": "alcohol",
-                        "count": 2
-                    }
-                ],
-                "currentDrink": "alcohol"
+                ]
             }
-        ]
-    },
-    "date_value_2": {
-        "players": [
-            {
-                "name": "name_value_3",
-                "drinks": [
-                    {
-                        "drinkName": "wine",
-                        "count": 4
-                    },
-                    {
-                        "drinkName": "rum",
-                        "count": 1
-                    }
-                ],
-                "currentDrink": "wine"
-            }
-        ]
+        }
     }
-}
+]
