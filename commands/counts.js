@@ -1,31 +1,26 @@
-const db = require("quick.db");
 const getDateString = require("../utilities/date");
 const util = require('util');
+const dataUtility = require('../utilities/data');
 
 module.exports.run = async (bot, message, args, logger) => {
-    var dataId = `${getDateString()}-${message.guild.name}`;
-    logger.log(util.format("Getting data for [%s]\n", dataId));
-    const day = db.fetch(`${dataId}`);
-    if (day != null) {
-        var drinkString = "Current drinks are:";
-        if (day.players.length > 0) {
-            for (player of day.players) {             
-                if (args && args.length > 0 && args == 'verbose'){
-                    drinkString += `\n${player.name} - ${player.drinks.map(d => `${d.count} ${d.drinkName}s`).join(', ')}`;
-                }
-                else{
-                    drinkString += `\n${player.name} - ${player.drinks.reduce((a, b) => a + b.count, 0)}`;
-                }
-            }       
+    var drinkCounts = dataUtility.getAllPlayerDrinkCounts(message.guildId, getDateString());
+
+    drinkString = 'Drink counts:';
+    if (drinkCounts.length > 0){
+        for (const drinkCount of drinkCounts) {
+            if (args && args.length > 0 && args == 'verbose') {
+                drinkString += `\n${drinkCount.playerName} - ${drinkCount.drinkCounts.map(d => `${d.count} ${d.drinkName}s`).join(', ')}`
+            }
+            else {
+                drinkString += `\n${drinkCount.playerName} - ${drinkCount.drinkCounts.reduce((a, b) => a + b.count, 0)}`
+            }
         }
-        else {
-            drinkString += " no one has had a drink today";
-        }
-        message.channel.send(drinkString);
     }
     else {
-        message.channel.send(`No one has started the party`);
+        drinkString += " no one has had a drink today";
     }
+
+    message.channel.send(drinkString);
 };
 
 module.exports.help = {

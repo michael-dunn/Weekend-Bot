@@ -1,5 +1,3 @@
-const db = require('quick.db');
-const getDateString = require('../utilities/date');
 const bus = require('../bus/bus');
 const gifGetter = require('../bus/drink-gif');
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
@@ -7,7 +5,7 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const defaultFields = [{ name: 'Color', value: '-', inline: true },
 { name: 'Higher or Lower', value: '-', inline: true },
 { name: 'Between or Outside', value: '-', inline: true },
-{ name: 'Suit', value: '-', inline: true }]
+{ name: 'Suit', value: '-', inline: true }];
 
 var embed = new MessageEmbed()
     .setColor('#0099ff')
@@ -18,11 +16,6 @@ var embed = new MessageEmbed()
 var messageHandler = {};
 
 module.exports.run = async (bot, message, args, logger) => {
-    const data = db.fetch(`${getDateString()}`);
-    var players = {};
-    if (data != null) {
-        players = data.players;
-    }
     switch (args[0]) {
         case 'roulette':
             message.channel.send('time to play some roulette');
@@ -45,7 +38,7 @@ module.exports.run = async (bot, message, args, logger) => {
                         .setLabel(button.label)
                 );
             });
-            embed.fields = defaultFields;
+            embed.fields = defaultFields.map(f=>{ f.value = '-'; return f;});
             embed.setFooter({ text: initialGame.footer });
             bot.on('interactionCreate', interaction => {
                 if (!interaction.isButton()) return;

@@ -1,6 +1,6 @@
-const db = require("quick.db");
 const getDateString = require("../utilities/date");
 const util = require('util');
+const dataUtility = require('../utilities/data');
 
 module.exports.run = async (bot, message, args, logger) => {
 	var drinksToAdd = 1;
@@ -8,34 +8,17 @@ module.exports.run = async (bot, message, args, logger) => {
 		if (isNaN(parseInt(args[0])))
 			logger.log(util.format('\'%s\' is not a number', args[0]));
 		else
-			drinksToAdd = parseInt(args[0]);
+			drinksToAdd = parseFloat(args[0]);
 	}
-	var dataId = `${getDateString()}-${message.guild.toString()}`;
-	logger.log(util.format("getting data for [%s]", dataId));
-	const data = db.fetch(`${dataId}`);
-	logger.log(util.format('data found: %j', data));
-	if (data != null) {
-		const player = data.players.findIndex(p => p.name == message.author.username);
-		if (player != -1) {
-			logger.log(util.format('%s\'s current drink is %s', data.players[player].name, data.players[player].currentDrink));
-			logger.log(util.format('adding %d %s to %s', drinksToAdd, data.players[player].currentDrink + 's', data.players[player].name));
-			if (data.players[player].drinks && data.players[player].drinks.findIndex(d => d.drinkName == data.players[player].currentDrink) != -1)
-				data.players[player].drinks.find(d => d.drinkName == data.players[player].currentDrink).count += drinksToAdd;
-			else
-				data.players[player].drinks.push({ drinkName: data.players[player].currentDrink, count: drinksToAdd });
-			db.set(`${dataId}`, data);
-			message.reply(`${message.author.username} has had ${data.players[player].drinks.reduce((a, b) => a + b.count, 0)} drinks`);
-		}
-		else {
-			db.push(`${dataId}.players`, { name: message.author.username, drinks: [{ drinkName: 'alcohol', count: drinksToAdd }], currentDrink: 'alcohol' });
-			message.reply(`${message.author.username} had their first drink of the day!`);
-		}
+
+	for (var i = 0; i < drinksToAdd; i++) {
+		dataUtility.addDrinkToPlayer(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username });
 	}
-	else {
-		logger.log(`Nothing found for [${dataId}]`);
-		db.set(dataId, { players: [{ name: message.author.username, drinks: [{ drinkName: 'alcohol', count: drinksToAdd }], currentDrink: 'alcohol' }] });
-		message.reply(`${message.author.username} getting the party started!`);
-	}
+	var playerDrinkCount = dataUtility.getPlayerDrinkCount(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username }).reduce((a, b) => a + b.count, 0);
+	if (playerDrinkCount == drinksToAdd)
+		message.reply(`${message.author.username} is joining the party!`);
+	else
+		message.reply(`${message.author.username} has had ${playerDrinkCount} drinks`);
 };
 
 module.exports.help = {

@@ -73,7 +73,6 @@ function convertToNumber(value) {
 }
 
 function inBetween(first, second, givenNum) {
-    console.log(`${first} ${second} ${givenNum}`);
     if (first > second)
         return first > givenNum && givenNum > second;
     else
