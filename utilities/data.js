@@ -84,8 +84,10 @@ function getAllPlayerDrinkCounts(guildId, dayId){
     return day.players.map(p => { return {playerName: p.playerName, drinkCounts: getPlayerDrinkCount(guildId, dayId, {playerId: p.playerId,playerName:p.playerName})};});
 }
 
-module.exports.setPlayerDrink = setPlayerDrink;
-module.exports.addDrinkToPlayer = addDrinkToPlayer;
-module.exports.removeAllDrinksFromDay = removeAllDrinksFromDay;
-module.exports.getPlayerDrinkCount = getPlayerDrinkCount;
-module.exports.getAllPlayerDrinkCounts = getAllPlayerDrinkCounts;
+module.exports = {
+    setPlayerDrink: setPlayerDrink,
+    addDrinkToPlayer: addDrinkToPlayer,
+    removeAllDrinksFromDay: removeAllDrinksFromDay,
+    getPlayerDrinkCount: getPlayerDrinkCount,
+    getAllPlayerDrinkCounts: getAllPlayerDrinkCounts,
+}
