@@ -5,15 +5,18 @@ const dataUtility = require('../utilities/data');
 module.exports.run = async (bot, message, args, logger) => {
 	var drinksToAdd = 1;
 	if (args && args.length > 0) {
-		if (isNaN(parseInt(args[0])))
-			logger.log(util.format('\'%s\' is not a number', args[0]));
-		else
-			drinksToAdd = parseFloat(args[0]);
+		if (!isNaN(parseFloat(args[0]))) {
+			drinksToAdd = parseFloat(args.shift());
+		}
+		if (args.length > 0) {
+			dataUtility.setPlayerDrink(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username }, args.join(' '));
+		}
 	}
 
 	for (var i = 0; i < drinksToAdd; i++) {
 		dataUtility.addDrinkToPlayer(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username });
 	}
+
 	var playerDrinkCount = dataUtility.getPlayerDrinkCount(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username }).reduce((a, b) => a + b.count, 0);
 	if (playerDrinkCount == drinksToAdd)
 		message.reply(`${message.author.username} is joining the party!`);
@@ -24,7 +27,8 @@ module.exports.run = async (bot, message, args, logger) => {
 module.exports.help = {
 	name: 'cheers',
 	aliases: ["c", "drink"],
-	helpText: `-cheers [num]
+	helpText: `-cheers [num] [drinkName]
 		aliases: -c -drink
-		increase your drink count by [num] (default 1)`
+		increase your drink count by [num] (default 1)
+		and set your [drinkName]`
 }
