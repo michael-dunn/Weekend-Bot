@@ -84,10 +84,19 @@ function getAllPlayerDrinkCounts(guildId, dayId){
     return day.players.map(p => { return {playerName: p.playerName, drinkCounts: getPlayerDrinkCount(guildId, dayId, {playerId: p.playerId,playerName:p.playerName})};});
 }
 
+function getPlayerDrinkCountSince(dateTime, guildId, dayId, playerModel) {
+    var player = getPlayerData(guildId, dayId, playerModel);
+
+    var drinks = player.drinks.filter(d=> new Date(d.timeStamp) > dateTime);
+
+    return drinks.length;
+}
+
 module.exports = {
     setPlayerDrink: setPlayerDrink,
     addDrinkToPlayer: addDrinkToPlayer,
     removeAllDrinksFromDay: removeAllDrinksFromDay,
     getPlayerDrinkCount: getPlayerDrinkCount,
     getAllPlayerDrinkCounts: getAllPlayerDrinkCounts,
+    getPlayerDrinkCountSince: getPlayerDrinkCountSince,
 }
