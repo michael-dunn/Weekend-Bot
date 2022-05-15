@@ -16,13 +16,15 @@ function allData() {
     console.log(JSON.stringify(all));
 }
 
-function test() {
-    data.setPlayerDrink(0, 20220506, { playerId: 1, playerName: 'hoverfuse4' }, 'beer');
+function utilityCommand() {
+    //data.addDrinkToPlayer(1, 1, { playerId: 1, playerName: 'test' });
+    //data.addDrinkToPlayer(1, 1, { playerId: 1, playerName: 'test' });
+    //data.addDrinkToPlayer(1, 1, { playerId: 1, playerName: 'test' });
 
-    console.log(JSON.stringify(data.getAllPlayerDrinkCounts(0, 20220506)));
+    var drinks = data.getPlayerDrinkCountSince(new Date(new Date().getTime() - 3 * 60000), 1, 1, { playerId: 1, playerName: 'test' });
+    console.log(`${drinks} drinks`);
 }
 
-
 //clearDB();
-//test();
+//utilityCommand();
 //allData();
