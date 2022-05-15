@@ -5,7 +5,7 @@ const dataUtility = require('../utilities/data');
 module.exports.run = async (bot, message, args, logger) => {
 	var drinksToAdd = 1;
 	if (args && args.length > 0) {
-		if (!isNaN(parseInt(args[0]))) {
+		if (!isNaN(parseFloat(args[0]))) {
 			drinksToAdd = parseFloat(args.shift());
 		}
 		if (args.length > 0) {
