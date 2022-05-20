@@ -1,5 +1,7 @@
 const db = require('quick.db');
 const data = require('./utilities/data');
+const getEpisodeDetail = require('./utilities/iasip/episode-detail');
+const getEpisode = require('./utilities/iasip/episode-selector');
 
 function clearDB() {
     allRows = db.all();
@@ -25,6 +27,12 @@ function utilityCommand() {
     console.log(`${drinks} drinks`);
 }
 
+async function testIasipUrl() {
+    var detail = await getEpisodeDetail(getEpisode()).then(res => { return res; });
+
+    console.log(detail);
+}
+testIasipUrl();
 //clearDB();
 //utilityCommand();
 //allData();
