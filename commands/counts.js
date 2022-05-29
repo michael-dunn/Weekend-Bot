@@ -3,6 +3,7 @@ const util = require('util');
 const dataUtility = require('../utilities/data');
 
 module.exports.run = async (bot, message, args, logger) => {
+    console.log(`counts from ${message.author.username} args: ${JSON.stringify(args)}`);
     var drinkCounts = dataUtility.getAllPlayerDrinkCounts(message.guildId, getDateString());
 
     drinkString = 'Drink counts:';

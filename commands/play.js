@@ -21,6 +21,7 @@ var embed = new MessageEmbed()
 var messageHandler = {};
 
 module.exports.run = async (bot, message, args, logger) => {
+    console.log(`play from ${message.author.username} args: ${JSON.stringify(args)}`);
     switch (args[0]) {
         case 'iasip':
             fs.readFile('./constants/iasip-drinking.txt', 'utf8', (err, data) => {
@@ -65,35 +66,24 @@ module.exports.run = async (bot, message, args, logger) => {
             bot.on('interactionCreate', interaction => {
                 if (!interaction.isButton()) return;
                 const game = bus.next(interaction.customId);
-                if (game == null) {
+                if (game == null) { //game over
                     embed.setFooter({ text: 'Thanks for playing!' });
                     messageHandler.edit({ embeds: [embed] });
                 }
-                row.components = [];
-                game.buttons.forEach(button => {
-                    row.components.push(
-                        new MessageButton()
-                            .setCustomId(button.val)
-                            .setStyle("PRIMARY")
-                            .setLabel(button.label)
-                    );
-                });
-                if (game.cards.length == 0) {
-                    embed.fields.forEach(f => f.value = '-');
-                }
-                else {
-                    embed.fields[game.cards.length - 1].value = game.cards[game.cards.length - 1].code;
-                }
-                embed.setFooter({ text: game.footer });
                 if (game.drink) {
                     embed.description = `Drink count: ${game.count}`;
                     embed.setImage(gifGetter());
+                    embed.fields.find(f=>f.value=='-').value = game.lastCard.code;
+                    row.components.forEach(c=>c.setDisabled(true));
+                    messageHandler.edit({ embeds: [embed], components: [row] });
                     setTimeout(() => {
                         embed.image = null;
-                        messageHandler.edit({ embeds: [embed], components: [row] });
+                        setEmbed(row,game,embed,messageHandler,interaction);
                     }, 6000);
                 }
-                messageHandler.edit({ embeds: [embed], components: [row] });
+                else {
+                    setEmbed(row,game,embed,messageHandler,interaction);
+                }
                 interaction.deferUpdate();
             });
 
@@ -105,9 +95,29 @@ module.exports.run = async (bot, message, args, logger) => {
     }
 };
 
+function setEmbed(row,game,embed,messageHandler){
+    row.components = [];
+    game.buttons.forEach(button => {
+        row.components.push(
+            new MessageButton()
+                .setCustomId(button.val)
+                .setStyle("PRIMARY")
+                .setLabel(button.label)
+                .setDisabled(false)
+        );
+    });
+    if (game.cards.length == 0) {
+        embed.fields.forEach(f => f.value = '-');
+    }
+    else {
+        embed.fields[game.cards.length - 1].value = game.cards[game.cards.length - 1].code;
+    }
+    messageHandler.edit({ embeds: [embed], components: [row] });
+}
+
 module.exports.help = {
     name: "play",
     aliases: [],
     helpText: `-play [game]
-        [game] can be bus`
+        [game] can be 'bus', 'iasip' and 'episode'`
 }

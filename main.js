@@ -29,7 +29,7 @@ fs.readdir("./commands/", (err, files) => {
 	});
 });
 bot.on("ready", async () => {
-	bot.user.setActivity(`Ready to Party`);
+	bot.user.setActivity(`The weekend already?`);
 	bot.user.setStatus('online');
 
 	bot.on("messageCreate", async message => {

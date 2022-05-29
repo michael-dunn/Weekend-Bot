@@ -1,7 +1,7 @@
 const db = require('quick.db');
 
 const defaultDay = { players: [] };
-const defaultPlayer = { playerId: null, drinks: [], currentDrink: 'undefined' };
+const defaultPlayer = { playerId: null, drinks: [], currentDrink: 'drink' };
 
 function getDayData(guildId, dayId) {
     var dayData = db.get(`${guildId}.${dayId}`);
