@@ -15,7 +15,7 @@ const defaultFields = [{ name: 'Color', value: '-', inline: true },
 var embed = new MessageEmbed()
     .setColor('#0099ff')
     .setTitle('Ride the Bus')
-    .setDescription('Get ready to get fucked up')
+    .setDescription('Get ready to get jacked up')
     .setThumbnail('https://i.pinimg.com/originals/37/00/00/370000d02f9d2e8c8ff8ab93a555d442.png');
 
 var messageHandler = {};

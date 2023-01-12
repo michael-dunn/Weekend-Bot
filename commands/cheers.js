@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args, logger) => {
 		if (!isNaN(parseFloat(args[0]))) {
 			drinksToAdd = parseFloat(args.shift());
 		}
-		if (args.length > 0) {
+		if (isNaN(parseFloat(args[0])) || args.length > 1) {
 			dataUtility.setPlayerDrink(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username }, args.join(' '));
 		}
 	}

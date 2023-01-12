@@ -5,7 +5,7 @@ const dataUtility = require('../utilities/data');
 module.exports.run = async (bot, message, args, logger) => {
     var drink = 'undefined';
     if (args && args.length > 0)
-        drink = args[0];
+        drink = args.join(' ');
     dataUtility.setPlayerDrink(message.guildId, getDateString(), { playerId: message.author.id, playerName: message.author.username });
     message.channel.send(`Set drink to ${drink} for ${message.author.username}`);
 }
