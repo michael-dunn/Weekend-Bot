@@ -4,6 +4,7 @@ const dataUtility = require('../utilities/data');
 const data = require('../utilities/data');
 
 module.exports.run = async (bot, message, args, logger) => {
+	console.log(`cheers from ${message.author.username} args: ${JSON.stringify(args)}`);
 	var drinksToAdd = 1;
 	if (args && args.length > 0) {
 		if (!isNaN(parseFloat(args[0]))) {

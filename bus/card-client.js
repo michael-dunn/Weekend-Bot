@@ -22,6 +22,7 @@ function nextCard() {
             if (res.data.remaining == "4"){
                 shuffleDeck();
             }
+            res.data.cards[0].code = res.data.cards[0].code.replace('0','10');
             return res.data.cards;
         })
         .catch(error => {

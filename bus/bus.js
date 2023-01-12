@@ -11,8 +11,13 @@ const SuitsGameStep = 'Suits';
 const WinningGameStep = 'Win';
 
 function restartGame(drink) {
+    var lastDrawnCard = {};
+    if (drink){
+        drinkCounter++;
+        lastDrawnCard = cards[cards.length-1];
+    }
     cards = [];
-    return RedOrBlack(drink);
+    return RedOrBlack(drink,lastDrawnCard);
 }
 
 function newGame() {
@@ -79,11 +84,9 @@ function inBetween(first, second, givenNum) {
         return second > givenNum && givenNum > first;
 }
 
-function RedOrBlack(drink) {
+function RedOrBlack(drink,lastDrawnCard) {
     drawNextCard();
     gameStep = RedOrBlackGameStep;
-    if (drink)
-        drinkCounter++;
     return {
         buttons: [
             { val: 'first', label: 'Red' },
@@ -92,7 +95,8 @@ function RedOrBlack(drink) {
         footer: 'Red or Black?',
         cards: cards.slice(0, 0),
         drink: drink,
-        count: drinkCounter
+        count: drinkCounter,
+        lastCard: lastDrawnCard
     };
 }
 
@@ -105,7 +109,8 @@ function HigherOrLower() {
             { val: 'second', label: 'Lower' }
         ],
         footer: 'Higher Or Lower?',
-        cards: cards.slice(0, 1)
+        cards: cards.slice(0, 1),
+        lastCard: null
     };
 }
 
@@ -118,7 +123,8 @@ function OutsideOrBetween() {
             { val: 'second', label: 'Between' }
         ],
         footer: 'Outside or Between?',
-        cards: cards.slice(0, 2)
+        cards: cards.slice(0, 2),
+        lastCard: null
     };
 }
 
@@ -133,7 +139,8 @@ function Suits() {
             { val: 'fourth', label: 'Club' }
         ],
         footer: 'Suit?',
-        cards: cards.slice(0, 3)
+        cards: cards.slice(0, 3),
+        lastCard: null
     };
 }
 
